@@ -3,6 +3,7 @@ const getAllContacts = require('./getAllContacts');
 const getContactById = require('./getContactById');
 const removeContactById = require('./removeContactById');
 const updateContactById = require('./updateContactById');
+const updateStatus = require("./updateStatus");
 const { controllerWrapper } = require('../../helpers');
 
 module.exports = { 
@@ -11,4 +12,5 @@ module.exports = {
     getContactById: controllerWrapper(getContactById),
     removeContactById: controllerWrapper(removeContactById), 
     updateContactById: controllerWrapper(updateContactById),
+    updateStatus: controllerWrapper(updateStatus),
 }
