@@ -6,15 +6,16 @@ const { RequestError } = require("../../helpers");
 
 const { JWT_SECRET } = process.env;
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (!user) {
+  const passwordCompare = await bcrypt.compare(password, user.password);
+
+  if (!user && !passwordCompare) {
     throw RequestError(401, "Incorrect login or password");
   }
-  const passwordCompare = await bcrypt.compare(password, user.password);
-  if (!passwordCompare) {
-    throw RequestError(401, "Incorrect login or password");
+  if (!user.verify) {
+    throw next(RequestError(401, "Email not verified"));
   }
 
   const payload = {
